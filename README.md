@@ -41,3 +41,10 @@
 
 * Test the app extensively to ensure smooth functionality and usability.
 * Gather feedback from early users to identify areas for improvement and iterate on the app's features and user experience.
+
+
+## API's
+
+Weather API: https://open-meteo.com/en/docs
+
+Geolocation API: https://nominatim.org/release-docs/develop/api/Overview/

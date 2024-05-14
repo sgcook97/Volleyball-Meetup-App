@@ -1,9 +1,10 @@
+const dotenv = require('dotenv').config();
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import { fetchWeather } from './utils/weatherFetch';
 
-dotenv.config();
+
 
 const app: Express = express();
 
@@ -11,8 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const uri: string =
-    process.env.MONGODB_URI as string;
+const uri: string = process.env.MONGODB_URI as string;
 
 (async () => {
     try {
@@ -22,6 +22,8 @@ const uri: string =
         console.error(error);
     }
 })();
+
+
 
 app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('Server is running');
