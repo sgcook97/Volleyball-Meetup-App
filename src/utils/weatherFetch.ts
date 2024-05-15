@@ -1,6 +1,6 @@
 import { fetchWeatherApi } from 'openmeteo';
 
-const open_meteo_api_url = process.env.OPEN_METEO_API_URL as string;
+const OPEN_METEO_API_URL = process.env.OPEN_METEO_API_URL as string;
 
 const range = (start: number, stop: number, step: number) =>
 	Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
@@ -18,7 +18,7 @@ export async function fetchWeather(latitude: number, longitude: number) {
     };
 
     try {
-        const responses = await fetchWeatherApi(open_meteo_api_url, params);
+        const responses = await fetchWeatherApi(OPEN_METEO_API_URL, params);
 
         const response = responses[0];
         const utcOffsetSeconds = response.utcOffsetSeconds();

@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const nominatim_api_url = process.env.NOMINATIM_API_URL as string;
+const NOMINATIM_API_URL = process.env.NOMINATIM_API_URL as string;
 
 export async function fetchLocation() {
     try {
-        const response = await axios.get(nominatim_api_url, {
+        const response = await axios.get(NOMINATIM_API_URL, {
             
         });
     
