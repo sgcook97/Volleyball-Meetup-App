@@ -8,9 +8,10 @@ const placeSchema = new Schema({
 
 const postSchema = new Schema({
     poster: { type: String, required: true },
-    location: placeSchema,
+    location: { type: String, required: true },
     skillLevel: { type: String, required: true },
     content: { type: String },
+    createdAt: { type: Date, default: Date.now },
 });
 
 export const Post = mongoose.model('Post', postSchema);

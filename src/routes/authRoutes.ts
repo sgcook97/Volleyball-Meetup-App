@@ -2,12 +2,13 @@ import express, { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
+import validateUsernameOrEmail from '../middlewares/verifySignup';
 
 const authRouter: Router = express.Router();
 
 
 // Register endpoint
-authRouter.post('/register', async (req: Request, res: Response) => {
+authRouter.post('/register', validateUsernameOrEmail, async (req: Request, res: Response) => {
     const { username, email, password, skillLevel, favoritePlaces } = req.body;
 
     try {
@@ -66,13 +67,18 @@ authRouter.post('/login', async (req: Request, res: Response) => {
             { expiresIn: '1h' } // token expiration time
         );
 
-        res.status(200).json({ token });
+        res.status(200).json({ 
+            token,
+            userId: user._id,
+            username: user.username,
+        });
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
+// Logout endpoint
 authRouter.post('/logout', async (req: Request, res: Response) => {
     return res.status(200).json({ message: 'Logout successful' }); 
 });
