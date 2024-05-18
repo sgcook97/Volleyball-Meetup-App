@@ -4,6 +4,7 @@ import cors from 'cors';
 import db from './models';
 import authRouter from './routes/authRoutes';
 import postRouter from './routes/postRoutes';
+import userRouter from './routes/userRoutes';
 
 const app: Express = express();
 
@@ -34,6 +35,7 @@ db.mongoose
 // routes
 app.use('/auth', authRouter);
 app.use('/post', postRouter);
+app.use('/user', userRouter);
 
 
 // healthcheck
