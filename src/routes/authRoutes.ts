@@ -70,7 +70,10 @@ authRouter.post('/login', async (req: Request, res: Response) => {
         res.status(200).json({ 
             token,
             userId: user._id,
+            email: user.email,
             username: user.username,
+            skillLevel: user.skillLevel,
+            favoritePlaces: user.favoritePlaces,
         });
     } catch (error) {
         console.error('Error logging in:', error);
