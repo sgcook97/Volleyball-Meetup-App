@@ -6,6 +6,22 @@ import validateUsernameOrEmail from '../middlewares/verifySignup';
 
 const authRouter: Router = express.Router();
 
+// Helper function to generate tokens
+const generateTokens = (userId: string, email: string) => {
+    const accessToken = jwt.sign(
+        { userId, email },
+        process.env.JWT_SECRET_KEY as string,
+        { expiresIn: '1h' }
+    );
+
+    const refreshToken = jwt.sign(
+        { userId, email },
+        process.env.JWT_REFRESH_SECRET_KEY as string,
+        { expiresIn: '7d' }
+    );
+
+    return { accessToken, refreshToken };
+};
 
 // Register endpoint
 authRouter.post('/register', validateUsernameOrEmail, async (req: Request, res: Response) => {
@@ -60,15 +76,12 @@ authRouter.post('/login', async (req: Request, res: Response) => {
             return res.status(401).json({ error: 'Invalid password' });
         }
 
-        // generate a JWT token
-        const token = jwt.sign(
-            { userId: user._id, email: user.email },
-            process.env.JWT_SECRET_KEY as string, // Replace with a secure secret key
-            { expiresIn: '1h' } // token expiration time
-        );
+        // generate tokens
+        const { accessToken, refreshToken } = generateTokens(user._id.toString(), user.email);
 
         res.status(200).json({ 
-            token,
+            accessToken,
+            refreshToken,
             userId: user._id,
             email: user.email,
             username: user.username,
@@ -78,6 +91,29 @@ authRouter.post('/login', async (req: Request, res: Response) => {
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Refresh token endpoint
+authRouter.post('/refresh-token', async (req: Request, res: Response) => {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+        return res.status(401).json({ error: 'Refresh token is required' });
+    }
+
+    try {
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY as string) as { userId: string, email: string };
+
+        const { userId, email } = decoded;
+
+        // Generate new tokens
+        const newTokens = generateTokens(userId, email);
+
+        res.status(200).json(newTokens);
+    } catch (error) {
+        console.error('Error refreshing token:', error);
+        res.status(403).json({ error: 'Invalid refresh token' });
     }
 });
 
