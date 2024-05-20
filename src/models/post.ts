@@ -7,7 +7,10 @@ import mongoose, { Schema } from "mongoose";
 // });
 
 const postSchema = new Schema({
-    poster: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    poster: { 
+        posterId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, 
+        username: { type: String, required: true }
+    },
     location: { type: String, required: true },
     skillLevel: { type: String, required: true },
     content: { type: String },
