@@ -11,6 +11,7 @@ const postSchema = new Schema({
         posterId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, 
         username: { type: String, required: true }
     },
+    title: { type: String, required: true },
     location: { type: String, required: true },
     skillLevel: { type: String, required: true },
     content: { type: String },

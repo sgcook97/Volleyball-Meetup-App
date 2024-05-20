@@ -41,4 +41,16 @@ postRouter.get('/recent', async (req: Request, res: Response) => {
     }
 });
 
+postRouter.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.id;
+        const posts = await Post.find({ 'poster.posterId': userId }).sort({ createdAt: -1 });
+
+        res.status(200).json({ posts: posts });
+    } catch (error) {
+        console.error('Error retrieving posts:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 export default postRouter;
