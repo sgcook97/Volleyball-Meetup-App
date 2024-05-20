@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { Post } from '../models/post'; // Assuming you have a Post model
+import { Post } from '../models/Post'; // Assuming you have a Post model
 import verifyToken from '../middlewares/authJwt';
 
 const postRouter = express.Router();

@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from 'express';
-import { User } from '../models/user';
+import { User } from '../models/User';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import verifyToken from '../middlewares/authJwt';
 import nodemailer from 'nodemailer';
