@@ -11,6 +11,7 @@ const messageSchema: Schema = new Schema({
     senderId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     receiverId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     content: { type: String, required: true },
+    isRead: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now, expires: '7d' },
 });
 
