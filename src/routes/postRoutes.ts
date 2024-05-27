@@ -1,8 +1,10 @@
 import express, { Request, Response } from 'express';
-import { Post } from '../models/Post'; // Assuming you have a Post model
+import db  from '../models';
 import verifyToken from '../middlewares/authJwt';
 
 const postRouter = express.Router();
+
+const Post = db.Post;
 
 // Create a new post
 postRouter.post('/create-post', verifyToken, async (req: Request, res: Response) => {
