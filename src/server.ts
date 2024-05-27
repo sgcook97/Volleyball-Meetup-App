@@ -1,13 +1,21 @@
-const dotenv = require('dotenv').config();
+import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import db from './models';
 import authRouter from './routes/authRoutes';
 import postRouter from './routes/postRoutes';
 import userRouter from './routes/userRoutes';
+import messageRouter from './routes/messageRoutes';
+import { createServer } from 'http';
+import connectDB from './config/database';
+import configureSocket from './config/socket';
+import { Server } from 'socket.io';
+
+dotenv.config();
 
 const app: Express = express();
 
+// Server setup
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -20,22 +28,26 @@ app.use(function(req, res, next) {
     next();
 });
 
-// connect to db
-const MONGODB_URI: string = process.env.MONGODB_URI as string;
-db.mongoose
-    .connect(MONGODB_URI)
-    .then(() => {
-        console.log('Connected to the database');
-    })
-    .catch(err => {
-        console.error("Connection error", err);
-        process.exit();
-    });
+// socket.io setup
+const server = createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+    }
+});
 
-// routes
+// configure socket. config in config/socket.ts
+configureSocket(io);
+
+// connect to db. config in config/database.ts
+connectDB();
+
+// routes from routes/*.ts
 app.use('/auth', authRouter);
 app.use('/post', postRouter);
 app.use('/user', userRouter);
+app.use('/message', messageRouter);
 
 
 // healthcheck
@@ -46,6 +58,6 @@ app.get('/health', (_req: Request, res: Response) => {
 
 // Run server
 const PORT: string = process.env.PORT as string;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on: http://localhost:${PORT}`);
 });
