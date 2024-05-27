@@ -2,7 +2,7 @@
   "name": "vball-meetup-api",
   "version": "1.0.0",
   "description": "api for vball meetup app",
-  "main": "src/server.js",
+  "main": "src/server.ts",
   "dependencies": {
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
@@ -30,7 +30,7 @@
     "typescript": "^5.4.5"
   },
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts"
   },
