@@ -1,6 +1,6 @@
 import mongoose, { Connection } from 'mongoose';
 import { User } from './User';
-import { Post } from './Post';
+import { Post } from './PostModel';
 import { Message } from './Message';
 mongoose.Promise = global.Promise;
 
